@@ -11,20 +11,17 @@
 @interface GuessViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *guessPic;
-@property (weak, nonatomic) IBOutlet UIButton *downloadButton;
 @property (weak, nonatomic) IBOutlet UILabel *letsLabel;
 @property (weak, nonatomic) IBOutlet UINavigationBar *naviBar;
 @property (weak, nonatomic) IBOutlet UINavigationItem *naviItem;
 @property (weak, nonatomic) IBOutlet UIView *bot_view;
 @property (weak, nonatomic) IBOutlet UIView *ind_view;
-@property (weak, nonatomic) IBOutlet UIView *opa_view;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *ind;
 @property (weak, nonatomic) IBOutlet UITextField *tf;
 
 
 
 
-- (IBAction)downloadButtonPressed:(id)sender;
 
 
 @end
@@ -64,10 +61,6 @@
     [self.ind startAnimating];
     //インジケータ隠す
     self.ind_view.hidden = true;
-    //downloadbuttonフォント設定
-    [self.downloadButton.titleLabel setFont:[UIFont fontWithName:@"HoboStd" size:30.0]];
-    //opaview登場&調整
-    self.opa_view.hidden = false;
 
     /////bottom位置調整/////
     CGRect r = [[UIScreen mainScreen] applicationFrame];
@@ -113,6 +106,7 @@
     self.tf.returnKeyType = UIReturnKeyDone;
     self.tf.delegate = self;
 
+    [self download];
 }
 
 - (void)viewDidUnload{
@@ -143,10 +137,8 @@
     
 }
 
-- (IBAction)downloadButtonPressed:(id)sender {
+- (void)download{
     self.ind_view.hidden = false;
-    self.opa_view.hidden = true;
-    self.downloadButton.hidden = true;
     // 送信するリクエストを生成する。
     NSURL *url = [NSURL URLWithString:@"http://ec2-54-218-53-195.us-west-2.compute.amazonaws.com/guess_draw/api/get_pic.php"];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];

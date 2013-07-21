@@ -28,12 +28,10 @@
 		424689371799ACBA007F09F1 /* draw_clr.png in Resources */ = {isa = PBXBuildFile; fileRef = 424689361799ACBA007F09F1 /* draw_clr.png */; };
 		4246893B179AC0BF007F09F1 /* ViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42468939179AC0BE007F09F1 /* ViewViewController.m */; };
 		4246893C179AC0BF007F09F1 /* ViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4246893A179AC0BF007F09F1 /* ViewViewController.xib */; };
-<<<<<<< HEAD
 		4282206B179BB214006C35D8 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4282206A179BB214006C35D8 /* FacebookSDK.framework */; };
 		4282206D179BC873006C35D8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4282206C179BC873006C35D8 /* AVFoundation.framework */; };
 		42822070179BC90A006C35D8 /* sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4282206F179BC90A006C35D8 /* sound.mp3 */; };
-=======
->>>>>>> d79b2b393e0ef122284f0da6323670878a03146d
+
 		544D5AAF17928BC5000AAA81 /* ModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544D5AAD17928BC5000AAA81 /* ModeViewController.m */; };
 		544D5AB017928BC5000AAA81 /* ModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 544D5AAE17928BC5000AAA81 /* ModeViewController.xib */; };
 		544D5AB717928CF5000AAA81 /* GuessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544D5AB217928CF5000AAA81 /* GuessViewController.m */; };
@@ -131,12 +129,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< HEAD
+
 				4282206D179BC873006C35D8 /* AVFoundation.framework in Frameworks */,
 				4282206B179BB214006C35D8 /* FacebookSDK.framework in Frameworks */,
-=======
-				29FA6861179BB7D900EE09F0 /* FacebookSDK.framework in Frameworks */,
->>>>>>> d79b2b393e0ef122284f0da6323670878a03146d
+
 				B59359E416D564DE000A63F0 /* Security.framework in Frameworks */,
 				85A928EA1611471C008699F1 /* Social.framework in Frameworks */,
 				B9A416AA16113F2D001E7A77 /* AdSupport.framework in Frameworks */,
@@ -193,12 +189,8 @@
 		84C757AD152A38770070DD9C = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				4282206C179BC873006C35D8 /* AVFoundation.framework */,
-=======
-				29FA6860179BB7D900EE09F0 /* FacebookSDK.framework */,
-				2992BEB9179BB4A5008660F4 /* FacebookSDK.framework */,
->>>>>>> d79b2b393e0ef122284f0da6323670878a03146d
+
 				4282206A179BB214006C35D8 /* FacebookSDK.framework */,
 				4246890E179933BA007F09F1 /* FacebookSDK.framework */,
 				84C757C2152A38770070DD9C /* SessionLoginSample */,
