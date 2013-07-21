@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2992BEBA179BB4A5008660F4 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2992BEB9179BB4A5008660F4 /* FacebookSDK.framework */; };
+		29FA6861179BB7D900EE09F0 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FA6860179BB7D900EE09F0 /* FacebookSDK.framework */; };
 		424689121799384B007F09F1 /* btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 424689111799384B007F09F1 /* btn.png */; };
 		424689151799393E007F09F1 /* HoboStd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 424689141799393E007F09F1 /* HoboStd.otf */; };
 		42468917179944AA007F09F1 /* guess_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 42468916179944AA007F09F1 /* guess_btn.png */; };
@@ -58,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		2992BEB9179BB4A5008660F4 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = "../../../facebook-ios-sdk/build/FacebookSDK.framework"; sourceTree = "<group>"; };
+		29FA6860179BB7D900EE09F0 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = "../facebook-ios-sdk/build/FacebookSDK.framework"; sourceTree = "<group>"; };
 		4246890E179933BA007F09F1 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = "../../../../Downloads/facebook-ios-sdk/build/FacebookSDK.framework"; sourceTree = "<group>"; };
 		424689111799384B007F09F1 /* btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn.png; sourceTree = "<group>"; };
 		424689141799393E007F09F1 /* HoboStd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HoboStd.otf; sourceTree = "<group>"; };
@@ -122,7 +123,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2992BEBA179BB4A5008660F4 /* FacebookSDK.framework in Frameworks */,
+				29FA6861179BB7D900EE09F0 /* FacebookSDK.framework in Frameworks */,
 				B59359E416D564DE000A63F0 /* Security.framework in Frameworks */,
 				85A928EA1611471C008699F1 /* Social.framework in Frameworks */,
 				B9A416AA16113F2D001E7A77 /* AdSupport.framework in Frameworks */,
@@ -171,6 +172,7 @@
 		84C757AD152A38770070DD9C = {
 			isa = PBXGroup;
 			children = (
+				29FA6860179BB7D900EE09F0 /* FacebookSDK.framework */,
 				2992BEB9179BB4A5008660F4 /* FacebookSDK.framework */,
 				4282206A179BB214006C35D8 /* FacebookSDK.framework */,
 				4246890E179933BA007F09F1 /* FacebookSDK.framework */,
@@ -448,6 +450,7 @@
 					"\"$(SRCROOT)/../../../../Downloads/facebook-ios-sdk/build\"",
 					"\"$(SRCROOT)/../../../../../Downloads/facebook-ios-sdk/build\"",
 					"\"$(SRCROOT)/../../../facebook-ios-sdk/build\"",
+					"\"$(SRCROOT)/../facebook-ios-sdk/build\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SessionLoginSample/SessionLoginSample-Prefix.pch";
@@ -473,6 +476,7 @@
 					"\"$(SRCROOT)/../../../../Downloads/facebook-ios-sdk/build\"",
 					"\"$(SRCROOT)/../../../../../Downloads/facebook-ios-sdk/build\"",
 					"\"$(SRCROOT)/../../../facebook-ios-sdk/build\"",
+					"\"$(SRCROOT)/../facebook-ios-sdk/build\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SessionLoginSample/SessionLoginSample-Prefix.pch";
