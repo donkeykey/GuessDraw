@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2992BEBA179BB4A5008660F4 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2992BEB9179BB4A5008660F4 /* FacebookSDK.framework */; };
 		424689121799384B007F09F1 /* btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 424689111799384B007F09F1 /* btn.png */; };
 		424689151799393E007F09F1 /* HoboStd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 424689141799393E007F09F1 /* HoboStd.otf */; };
 		42468917179944AA007F09F1 /* guess_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 42468916179944AA007F09F1 /* guess_btn.png */; };
@@ -27,7 +28,6 @@
 		424689371799ACBA007F09F1 /* draw_clr.png in Resources */ = {isa = PBXBuildFile; fileRef = 424689361799ACBA007F09F1 /* draw_clr.png */; };
 		4246893B179AC0BF007F09F1 /* ViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42468939179AC0BE007F09F1 /* ViewViewController.m */; };
 		4246893C179AC0BF007F09F1 /* ViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4246893A179AC0BF007F09F1 /* ViewViewController.xib */; };
-		4282206B179BB214006C35D8 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4282206A179BB214006C35D8 /* FacebookSDK.framework */; };
 		544D5AAF17928BC5000AAA81 /* ModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544D5AAD17928BC5000AAA81 /* ModeViewController.m */; };
 		544D5AB017928BC5000AAA81 /* ModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 544D5AAE17928BC5000AAA81 /* ModeViewController.xib */; };
 		544D5AB717928CF5000AAA81 /* GuessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544D5AB217928CF5000AAA81 /* GuessViewController.m */; };
@@ -57,6 +57,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2992BEB9179BB4A5008660F4 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = "../../../facebook-ios-sdk/build/FacebookSDK.framework"; sourceTree = "<group>"; };
 		4246890E179933BA007F09F1 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = "../../../../Downloads/facebook-ios-sdk/build/FacebookSDK.framework"; sourceTree = "<group>"; };
 		424689111799384B007F09F1 /* btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn.png; sourceTree = "<group>"; };
 		424689141799393E007F09F1 /* HoboStd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HoboStd.otf; sourceTree = "<group>"; };
@@ -121,7 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4282206B179BB214006C35D8 /* FacebookSDK.framework in Frameworks */,
+				2992BEBA179BB4A5008660F4 /* FacebookSDK.framework in Frameworks */,
 				B59359E416D564DE000A63F0 /* Security.framework in Frameworks */,
 				85A928EA1611471C008699F1 /* Social.framework in Frameworks */,
 				B9A416AA16113F2D001E7A77 /* AdSupport.framework in Frameworks */,
@@ -170,6 +171,7 @@
 		84C757AD152A38770070DD9C = {
 			isa = PBXGroup;
 			children = (
+				2992BEB9179BB4A5008660F4 /* FacebookSDK.framework */,
 				4282206A179BB214006C35D8 /* FacebookSDK.framework */,
 				4246890E179933BA007F09F1 /* FacebookSDK.framework */,
 				84C757C2152A38770070DD9C /* SessionLoginSample */,
@@ -445,6 +447,7 @@
 					"\"$(SRCROOT)/../../../../Documents/facebook-ios-sdk/build\"",
 					"\"$(SRCROOT)/../../../../Downloads/facebook-ios-sdk/build\"",
 					"\"$(SRCROOT)/../../../../../Downloads/facebook-ios-sdk/build\"",
+					"\"$(SRCROOT)/../../../facebook-ios-sdk/build\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SessionLoginSample/SessionLoginSample-Prefix.pch";
@@ -469,6 +472,7 @@
 					"\"$(SRCROOT)/../../../../Documents/facebook-ios-sdk/build\"",
 					"\"$(SRCROOT)/../../../../Downloads/facebook-ios-sdk/build\"",
 					"\"$(SRCROOT)/../../../../../Downloads/facebook-ios-sdk/build\"",
+					"\"$(SRCROOT)/../../../facebook-ios-sdk/build\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SessionLoginSample/SessionLoginSample-Prefix.pch";
