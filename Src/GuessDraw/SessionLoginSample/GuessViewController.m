@@ -287,151 +287,92 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
      
 }
 
+- (void) sendToServer{
+    NSLog(@"sending...");
+    [self.tf resignFirstResponder];
+    self.ind_view.hidden = false;
+    
+    //check FBID
+    SLAppDelegate* delegate = [[UIApplication sharedApplication] delegate];
+    fid = delegate.FBID;
+    // 送信するリクエストを生成する。
+    NSString *keyword = [self.tf.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    if ([self.tf.text length] > 0) {
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://ec2-54-218-53-195.us-west-2.compute.amazonaws.com/guess_draw/api/insert_title.php?flow_id=%@&fb_id=%@&title=%@",floid,fid,keyword]];
+        NSLog(@"tf:%@",self.tf.text);
+        NSLog(@"url:%@",url);
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+        
+        // リクエストを送信する。
+        // 第３引数のブロックに実行結果が渡される。
+        [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            
+            if (error) {
+                // エラー処理を行う。
+                if (error.code == -1003) {
+                    NSLog(@"not found hostname. targetURL=%@", url);
+                } else if (-1019) {
+                    NSLog(@"auth error. reason=%@", error);
+                } else {
+                    NSLog(@"unknown error occurred. reason = %@", error);
+                }
+                
+            } else {
+                int httpStatusCode = ((NSHTTPURLResponse *)response).statusCode;
+                if (httpStatusCode == 404) {
+                    NSLog(@"404 NOT FOUND ERROR. targetURL=%@", url);
+                    // } else if (・・・) {
+                    // 他にも処理したいHTTPステータスがあれば書く。
+                    
+                } else {
+                    NSLog(@"success request!!");
+                    NSLog(@"statusCode = %d", ((NSHTTPURLResponse *)response).statusCode);
+                    //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+                    //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSShiftJISStringEncoding]);
+                    //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]);
+                    //self.titleLabel.text = [NSString stringWithFormat:@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+                    
+                    NSString *contents = [[NSString alloc] initWithData:data
+                                                               encoding:NSUTF8StringEncoding];
+                    NSData *tmp = [contents dataUsingEncoding:NSUTF8StringEncoding];
+                    NSError *error=nil;
+                    NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:tmp
+                                                                               options:NSJSONReadingAllowFragments error:&error];
+                    //self.checkLabel.text = [jsonObject objectForKey:@"pic_url"];
+                }
+            }
+            // ここはサブスレッドなので、メインスレッドで何かしたい場合には
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // ここに何か処理を書く。
+                self.ind_view.hidden = true;
+                [self dismissViewControllerAnimated:YES completion:^{NSLog(@"complete !");}];
+                
+            });
+        }];
+    }else{
+        NSLog(@"string is null");
+    }
+    
+    
+
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     if ( touch.view.tag == 500 ){
-        NSLog(@"sending...");
+        [self sendToServer];
+    }else{
         [self.tf resignFirstResponder];
-        self.ind_view.hidden = false;
-        
-        //check FBID
-        SLAppDelegate* delegate = [[UIApplication sharedApplication] delegate];
-        fid = delegate.FBID;
-        // 送信するリクエストを生成する。
-        NSString *keyword = [self.tf.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        if ([self.tf.text length] > 0) {
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://ec2-54-218-53-195.us-west-2.compute.amazonaws.com/guess_draw/api/insert_title.php?flow_id=%@&fb_id=%@&title=%@",floid,fid,keyword]];
-            NSLog(@"tf:%@",self.tf.text);
-            NSLog(@"url:%@",url);
-            NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-            
-            // リクエストを送信する。
-            // 第３引数のブロックに実行結果が渡される。
-            [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                
-                if (error) {
-                    // エラー処理を行う。
-                    if (error.code == -1003) {
-                        NSLog(@"not found hostname. targetURL=%@", url);
-                    } else if (-1019) {
-                        NSLog(@"auth error. reason=%@", error);
-                    } else {
-                        NSLog(@"unknown error occurred. reason = %@", error);
-                    }
-                    
-                } else {
-                    int httpStatusCode = ((NSHTTPURLResponse *)response).statusCode;
-                    if (httpStatusCode == 404) {
-                        NSLog(@"404 NOT FOUND ERROR. targetURL=%@", url);
-                        // } else if (・・・) {
-                        // 他にも処理したいHTTPステータスがあれば書く。
-                        
-                    } else {
-                        NSLog(@"success request!!");
-                        NSLog(@"statusCode = %d", ((NSHTTPURLResponse *)response).statusCode);
-                        //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-                        //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSShiftJISStringEncoding]);
-                        //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]);
-                        //self.titleLabel.text = [NSString stringWithFormat:@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
-                        
-                        NSString *contents = [[NSString alloc] initWithData:data
-                                                                   encoding:NSUTF8StringEncoding];
-                        NSData *tmp = [contents dataUsingEncoding:NSUTF8StringEncoding];
-                        NSError *error=nil;
-                        NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:tmp
-                                                                                   options:NSJSONReadingAllowFragments error:&error];
-                        //self.checkLabel.text = [jsonObject objectForKey:@"pic_url"];
-                    }
-                }
-                // ここはサブスレッドなので、メインスレッドで何かしたい場合には
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    // ここに何か処理を書く。
-                    self.ind_view.hidden = true;
-                    [self dismissViewControllerAnimated:YES completion:^{NSLog(@"complete !");}];
-                    
-                });
-            }];
-            }else{
-                NSLog(@"string is null");
-            }
-        
-
-        }else{
-            [self.tf resignFirstResponder];
-        }
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self.tf resignFirstResponder];
+    [self sendToServer];
     return YES;
 }
 
-/*
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    // キーボード表示・非表示の通知の登録
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
-}
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    // キーボード表示・非表示の通知の解除
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    
-}
-
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-    // キーボードのCGRectを取得
-    NSDictionary *userInfo = [notification userInfo];
-    CGRect keyboardRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    // 編集中テキストフィールドのRectを取得
-    CGRect editTextFieldRect = CGRectZero;
-    self.bot_view.frame.origin.y = _textField.origin.y;
-    
-    // contentSizeをキーボードの高さ分追加する
-    CGSize  newContentSize = CGSizeZero;
-    newContentSize = CGSizeMake(_scrollView.contentSize.width, _scrollView.contentSize.height+keyboardRect.size.height);
-    
-    // contentOffsetを編集中テキストフィールドの座標に設定
-    CGPoint newOffset = CGPointZero;
-    newOffset = CGPointMake(0, editTextFieldRect.origin.y);
-    
-    // キーボードのanimationDurationを取得
-    NSTimeInterval duration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    UIViewAnimationCurve animationCurve = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
-    
-    // キーボードアニメーションと同じ間隔でテキストフィールドの位置をアニメーションしつつ変更する
-    [UIView animateWithDuration:duration delay:0.0  options:(animationCurve << 16) animations:^{ _scrollView.contentSize = newContentSize; _scrollView.contentOffset = newOffset; } completion:nil];
-    
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    // キーボードのCGRectを取得
-    NSDictionary *userInfo = [notification userInfo];
-    CGRect keyboardRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    // contentSizeを元に戻す
-    newContentSize = CGSizeMake(_scrollView.contentSize.width, _scrollView.contentSize.height-keyboardRect.size.height);
-    
-    // キーボードのanimationDurationを取得
-    NSTimeInterval duration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    UIViewAnimationCurve animationCurve = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
-    
-    // キーボードアニメーションと同じ間隔でcontentSizeを元に戻す
-    [UIView animateWithDuration:duration delay:0.0 options:(animationCurve << 16) animations:^{ _scrollView.contentSize = newContentSize; } completion:nil];
-    
-}
-*/
 
 
 @end

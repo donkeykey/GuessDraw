@@ -42,6 +42,7 @@
 @synthesize titleLabel = _titleLabel;
 @synthesize letsLabel = _letsLabel;
 @synthesize subj;
+@synthesize white_flag;
 //@synthesize FBID = _FBID;
 
 
@@ -199,15 +200,14 @@
     blue = 0.0/255.0;
     brush = 5.0;
     opacity = 1.0;
+    
+    //white判定用フラグ
+    white_flag = 1;
 }
 
 - (void) netError{
     NSLog(@"netError");
-    UIAlertView *alert =
-    [[UIAlertView alloc] initWithTitle:@"通信エラー" message:@"通信状況を確認してください。"
-                              delegate:self cancelButtonTitle:@"確認" otherButtonTitles:nil];
-    [alert show];
-    
+    [self showAlert];
 }
 
 - (void)didReceiveMemoryWarning
@@ -221,15 +221,19 @@
     [self dismissViewControllerAnimated:YES completion:^{NSLog(@"complete !");}];
 }
 - (void)eraserButtonPressed {
+
     red = 255.0/255.0;
     green = 255.0/255.0;
     blue = 255.0/255.0;
+    brush = 10.0;
     opacity = 1.0;
+
 }
 - (void)penButtonPressed {
     red = 0/255.0;
     green = 0/255.0;
     blue = 0/255.0;
+    brush = 5.0;
     opacity = 1.0;
 }
 
@@ -243,109 +247,113 @@
 //send buttonを押すと，写真を送る．POSTDATAの作成とかそのへんは外に出して関数化してもいいかもしれない．
 
 - (void)sendButtonPressed{
-    self.indicator_view.hidden = false;
+    if (white_flag == 1) {
+        //アラート表示
+        [self showAlert];
+    }else{
+        self.indicator_view.hidden = false;
 
-    NSData* jpegData = [[NSData alloc] initWithData:UIImageJPEGRepresentation( self.mainImage.image, 0.5 )];
-    
-    //ここからPOSTDATAの作成 insert_pic
-    NSString *urlString = @"http://ec2-54-218-53-195.us-west-2.compute.amazonaws.com/guess_draw/api/insert_pic.php";
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
-    [request setURL:[NSURL URLWithString:urlString]];
-    [request setHTTPMethod:@"POST"];
-    
-    NSMutableData *body = [NSMutableData data];
-    
-    NSString *boundary = @"---------------------------168072824752491622650073";
-    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
-    [request addValue:contentType forHTTPHeaderField:@"Content-Type"];
-    
-    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[@"Content-Disposition: form-data; name=\"pic\"; filename=\"user.jpeg\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[NSData dataWithData:jpegData]];
-    [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    [request setHTTPBody:body];
-    
-    NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    //NSString *returnString = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
-    NSError *error=nil;
-    NSDictionary *jsonObject2 = [NSJSONSerialization JSONObjectWithData:returnData
-                                                               options:NSJSONReadingAllowFragments error:&error];
-//    self.titleLabel.text = [jsonObject objectForKey:@"title"];
-    filename = [jsonObject2 objectForKey:@"file_name"];
-    NSLog(@"filename:%@",filename);
-    
-    //check FBID
-    SLAppDelegate* delegate = [[UIApplication sharedApplication] delegate];
-    fid = delegate.FBID;
-    NSLog(@"fid:%@",fid);
-    [super viewDidLoad];
-    
-    
-    //insert_pic_info
-    // 送信するリクエストを生成する。
-    NSURL *url_insert_pic_info = [NSURL URLWithString:[NSString stringWithFormat:@"http://ec2-54-218-53-195.us-west-2.compute.amazonaws.com/guess_draw/api/insert_pic_info.php?flow_id=%@&file_name=%@&fb_id=%@",floid,filename, fid]];
-    NSURLRequest *request_insert_pic_info = [[NSURLRequest alloc] initWithURL:url_insert_pic_info];
-    
-    // リクエストを送信する。
-    // 第３引数のブロックに実行結果が渡される。
-    [NSURLConnection sendAsynchronousRequest:request_insert_pic_info queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        NSData* jpegData = [[NSData alloc] initWithData:UIImageJPEGRepresentation( self.mainImage.image, 0.5 )];
         
-        if (error) {
-            // エラー処理を行う。
-            if (error.code == -1003) {
-                NSLog(@"not found hostname. targetURL=%@", url_insert_pic_info);
-            } else if (-1019) {
-                NSLog(@"auth error. reason=%@", error);
-            } else {
-                NSLog(@"unknown error occurred. reason = %@", error);
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self netError];
-            });
-        } else {
-            int httpStatusCode = ((NSHTTPURLResponse *)response).statusCode;
-            if (httpStatusCode == 404) {
-                NSLog(@"404 NOT FOUND ERROR. targetURL=%@", url_insert_pic_info);
-                // } else if (・・・) {
-                // 他にも処理したいHTTPステータスがあれば書く。
-                
-            } else {
-                NSLog(@"success request!!");
-                NSLog(@"statusCode = %d", ((NSHTTPURLResponse *)response).statusCode);
-                //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-                //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSShiftJISStringEncoding]);
-                //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]);
-                //self.titleLabel.text = [NSString stringWithFormat:@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
-                
-                NSString *contents = [[NSString alloc] initWithData:data
-                                                           encoding:NSUTF8StringEncoding];
-  //              NSData *tmp = [contents dataUsingEncoding:NSUTF8StringEncoding];
-  //              NSError *error=nil;
-  //              NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:tmp
-    //                                                                       options:NSJSONReadingAllowFragments error:&error];
-                //self.titleLabel.text = @"end";
-
-                
-                
-                // ここはサブスレッドなので、メインスレッドで何かしたい場合には
+        //ここからPOSTDATAの作成 insert_pic
+        NSString *urlString = @"http://ec2-54-218-53-195.us-west-2.compute.amazonaws.com/guess_draw/api/insert_pic.php";
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+        [request setURL:[NSURL URLWithString:urlString]];
+        [request setHTTPMethod:@"POST"];
+        
+        NSMutableData *body = [NSMutableData data];
+        
+        NSString *boundary = @"---------------------------168072824752491622650073";
+        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+        [request addValue:contentType forHTTPHeaderField:@"Content-Type"];
+        
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"Content-Disposition: form-data; name=\"pic\"; filename=\"user.jpeg\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[NSData dataWithData:jpegData]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        [request setHTTPBody:body];
+        
+        NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+        //NSString *returnString = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
+        NSError *error=nil;
+        NSDictionary *jsonObject2 = [NSJSONSerialization JSONObjectWithData:returnData
+                                                                   options:NSJSONReadingAllowFragments error:&error];
+    //    self.titleLabel.text = [jsonObject objectForKey:@"title"];
+        filename = [jsonObject2 objectForKey:@"file_name"];
+        NSLog(@"filename:%@",filename);
+        
+        //check FBID
+        SLAppDelegate* delegate = [[UIApplication sharedApplication] delegate];
+        fid = delegate.FBID;
+        NSLog(@"fid:%@",fid);
+        [super viewDidLoad];
+        
+        
+        //insert_pic_info
+        // 送信するリクエストを生成する。
+        NSURL *url_insert_pic_info = [NSURL URLWithString:[NSString stringWithFormat:@"http://ec2-54-218-53-195.us-west-2.compute.amazonaws.com/guess_draw/api/insert_pic_info.php?flow_id=%@&file_name=%@&fb_id=%@",floid,filename, fid]];
+        NSURLRequest *request_insert_pic_info = [[NSURLRequest alloc] initWithURL:url_insert_pic_info];
+        
+        // リクエストを送信する。
+        // 第３引数のブロックに実行結果が渡される。
+        [NSURLConnection sendAsynchronousRequest:request_insert_pic_info queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            
+            if (error) {
+                // エラー処理を行う。
+                if (error.code == -1003) {
+                    NSLog(@"not found hostname. targetURL=%@", url_insert_pic_info);
+                } else if (-1019) {
+                    NSLog(@"auth error. reason=%@", error);
+                } else {
+                    NSLog(@"unknown error occurred. reason = %@", error);
+                }
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    // ここに何か処理を書く。
-                    [self dismissViewControllerAnimated:YES completion:^{NSLog(@"complete !");}];
-                    self.indicator_view.hidden = true;
-
+                    [self netError];
                 });
+            } else {
+                int httpStatusCode = ((NSHTTPURLResponse *)response).statusCode;
+                if (httpStatusCode == 404) {
+                    NSLog(@"404 NOT FOUND ERROR. targetURL=%@", url_insert_pic_info);
+                    // } else if (・・・) {
+                    // 他にも処理したいHTTPステータスがあれば書く。
+                    
+                } else {
+                    NSLog(@"success request!!");
+                    NSLog(@"statusCode = %d", ((NSHTTPURLResponse *)response).statusCode);
+                    //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+                    //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSShiftJISStringEncoding]);
+                    //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]);
+                    //self.titleLabel.text = [NSString stringWithFormat:@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+                    
+                    //NSString *contents = [[NSString alloc] initWithData:dataencoding:NSUTF8StringEncoding];
+      //              NSData *tmp = [contents dataUsingEncoding:NSUTF8StringEncoding];
+      //              NSError *error=nil;
+      //              NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:tmp
+        //                                                                       options:NSJSONReadingAllowFragments error:&error];
+                    //self.titleLabel.text = @"end";
+
+                    
+                    
+                    // ここはサブスレッドなので、メインスレッドで何かしたい場合には
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // ここに何か処理を書く。
+                        [self dismissViewControllerAnimated:YES completion:^{NSLog(@"complete !");}];
+                        self.indicator_view.hidden = true;
+
+                    });
+                }
             }
-        }
-    }];
-    
-    
-//    NSLog(@"%@", returnString);
-    
-    //ここにinsert_pic_infoを入れる
+        }];
+        
+        
+    //    NSLog(@"%@", returnString);
+        
+        //ここにinsert_pic_infoを入れる
+    }
 }
 
 /*
@@ -382,15 +390,40 @@
     NSLog(@"sent? %@", html);
     
     // 終わった事をAlertダイアログで表示する。
-    UIAlertView *alertView
-    = [[UIAlertView alloc] initWithTitle:nil
-                                message:@"Finish Loading"
-                               delegate:nil
-                      cancelButtonTitle:@"OK"
-                      otherButtonTitles:nil];
-    [alertView show];
+
 }
 
+- (void) showAlert{
+    if (white_flag == 1) {//白紙提出の時
+        UIAlertView *alert =
+        [[UIAlertView alloc] initWithTitle:@"お知らせ" message:@"絵を描いてから送信しよう！"
+                                  delegate:self cancelButtonTitle:@"確認" otherButtonTitles:nil];
+        [alert show];
+    }else{//通信エラー時
+        UIAlertView *alert =
+        [[UIAlertView alloc] initWithTitle:@"通信エラー" message:@"通信状況を確認してください。"
+                                  delegate:self cancelButtonTitle:@"確認" otherButtonTitles:nil];
+        [alert show];
+        
+    }
+}
+
+// アラートのボタンが押された時に呼ばれるデリゲート例文
+-(void)alertView:(UIAlertView*)alertView
+clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (white_flag == 1) {//白紙提出の時
+    }else{
+        switch (buttonIndex) {
+            case 0:
+                //１番目のボタンが押されたときの処理を記述する
+                [self dismissViewControllerAnimated:YES completion:^{NSLog(@"complete !");}];
+                break;
+            case 1:
+                //２番目のボタンが押されたときの処理を記述する
+                break;
+        }
+    }
+}
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
@@ -399,6 +432,7 @@
     if ( touch.view.tag == self.tempDrawImage.tag ){
         lastPoint = [touch locationInView:self.mainImage];
         NSLog(@"%ld",(long)touch.view.tag);
+        white_flag = 0;
     }else if(touch.view.tag == 10){
         NSLog(@"pen");
         [self penButtonPressed];
@@ -419,6 +453,8 @@
     mouseSwiped = YES;
     UITouch *touch = [touches anyObject];
     if ( touch.view.tag == self.tempDrawImage.tag ){
+        white_flag = 0;
+
         CGPoint currentPoint = [touch locationInView:self.mainImage];
         
         UIGraphicsBeginImageContext(self.tempDrawImage.frame.size);
@@ -440,7 +476,8 @@
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    
+    white_flag = 0;
+
     if(!mouseSwiped) {
         UIGraphicsBeginImageContext(self.mainImage.frame.size);
         [self.tempDrawImage.image drawInRect:CGRectMake(0, 0, self.mainImage.frame.size.width, self.mainImage.frame.size.height)];
@@ -461,23 +498,11 @@
     self.mainImage.image = UIGraphicsGetImageFromCurrentImageContext();
     //self.tempDrawImage.image = nil;
     UIGraphicsEndImageContext();
+    lastPoint = CGPointMake(0, 0);
+
 }
 
-// アラートのボタンが押された時に呼ばれるデリゲート例文
--(void)alertView:(UIAlertView*)alertView
-clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    switch (buttonIndex) {
-        case 0:
-            //１番目のボタンが押されたときの処理を記述する
-            [self dismissViewControllerAnimated:YES completion:^{NSLog(@"complete !");}];
-            break;
-        case 1:
-            //２番目のボタンが押されたときの処理を記述する
-            break;
-    }
-    
-}
+
 
 
 @end

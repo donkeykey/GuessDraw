@@ -26,6 +26,7 @@
 
 //@property (nonatomic) NSString* FBID;
 @property (nonatomic) NSString* subj;
+@property (nonatomic) int white_flag;
 
 
 @end
