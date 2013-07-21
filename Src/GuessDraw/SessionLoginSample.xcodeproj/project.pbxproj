@@ -28,6 +28,8 @@
 		4246893B179AC0BF007F09F1 /* ViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42468939179AC0BE007F09F1 /* ViewViewController.m */; };
 		4246893C179AC0BF007F09F1 /* ViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4246893A179AC0BF007F09F1 /* ViewViewController.xib */; };
 		4282206B179BB214006C35D8 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4282206A179BB214006C35D8 /* FacebookSDK.framework */; };
+		4282206D179BC873006C35D8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4282206C179BC873006C35D8 /* AVFoundation.framework */; };
+		42822070179BC90A006C35D8 /* sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4282206F179BC90A006C35D8 /* sound.mp3 */; };
 		544D5AAF17928BC5000AAA81 /* ModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544D5AAD17928BC5000AAA81 /* ModeViewController.m */; };
 		544D5AB017928BC5000AAA81 /* ModeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 544D5AAE17928BC5000AAA81 /* ModeViewController.xib */; };
 		544D5AB717928CF5000AAA81 /* GuessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544D5AB217928CF5000AAA81 /* GuessViewController.m */; };
@@ -80,6 +82,8 @@
 		42468939179AC0BE007F09F1 /* ViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewViewController.m; sourceTree = "<group>"; };
 		4246893A179AC0BF007F09F1 /* ViewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewViewController.xib; sourceTree = "<group>"; };
 		4282206A179BB214006C35D8 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = "../../../../../Downloads/facebook-ios-sdk/build/FacebookSDK.framework"; sourceTree = "<group>"; };
+		4282206C179BC873006C35D8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		4282206F179BC90A006C35D8 /* sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sound.mp3; sourceTree = "<group>"; };
 		544D5AAC17928BC5000AAA81 /* ModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModeViewController.h; sourceTree = "<group>"; };
 		544D5AAD17928BC5000AAA81 /* ModeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModeViewController.m; sourceTree = "<group>"; };
 		544D5AAE17928BC5000AAA81 /* ModeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModeViewController.xib; sourceTree = "<group>"; };
@@ -121,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4282206D179BC873006C35D8 /* AVFoundation.framework in Frameworks */,
 				4282206B179BB214006C35D8 /* FacebookSDK.framework in Frameworks */,
 				B59359E416D564DE000A63F0 /* Security.framework in Frameworks */,
 				85A928EA1611471C008699F1 /* Social.framework in Frameworks */,
@@ -167,9 +172,18 @@
 			name = Fonts;
 			sourceTree = "<group>";
 		};
+		4282206E179BC8FA006C35D8 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				4282206F179BC90A006C35D8 /* sound.mp3 */,
+			);
+			name = Sounds;
+			sourceTree = "<group>";
+		};
 		84C757AD152A38770070DD9C = {
 			isa = PBXGroup;
 			children = (
+				4282206C179BC873006C35D8 /* AVFoundation.framework */,
 				4282206A179BB214006C35D8 /* FacebookSDK.framework */,
 				4246890E179933BA007F09F1 /* FacebookSDK.framework */,
 				84C757C2152A38770070DD9C /* SessionLoginSample */,
@@ -229,6 +243,7 @@
 		84C757C3152A38770070DD9C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4282206E179BC8FA006C35D8 /* Sounds */,
 				4246891317993929007F09F1 /* Fonts */,
 				424689101799383E007F09F1 /* Images */,
 				85C69DB11602B33C008AD9A0 /* Default-568h@2x.png */,
@@ -329,6 +344,7 @@
 				424689351799ACB2007F09F1 /* guess_clr.png in Resources */,
 				424689371799ACBA007F09F1 /* draw_clr.png in Resources */,
 				4246893C179AC0BF007F09F1 /* ViewViewController.xib in Resources */,
+				42822070179BC90A006C35D8 /* sound.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

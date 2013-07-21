@@ -106,19 +106,30 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) sound{
+    NSString *bgmPath = [[NSBundle mainBundle]
+                         pathForResource:@"sound" ofType:@"mp3"];
+    NSURL *bgmUrl = [NSURL fileURLWithPath:bgmPath];
+    bgm = [[AVAudioPlayer alloc] initWithContentsOfURL:bgmUrl error:nil];
+    [bgm setNumberOfLoops:0]; // 0なら1回だけ。－1ならエンドレスリピート。
+    [bgm play];
+}
+
 - (IBAction)pushedGuessMode:(id)sender {
+    [self sound];
     GuessViewController *guessView = [[GuessViewController alloc] initWithNibName:@"GuessViewController" bundle:nil];
     [self presentViewController:guessView animated:YES completion:NO];
 
 }
 
 - (IBAction)pushedDrawMode:(id)sender {
-    
+    [self sound];
     DrawViewController *drawView = [[DrawViewController alloc] initWithNibName:@"DrawViewController" bundle:nil];
     [self presentViewController:drawView animated:YES completion:NO];
 }
 
 - (IBAction)pushedViewMode:(id)sender {
+    [self sound];
     ViewViewController *viewView = [[ViewViewController alloc] initWithNibName:@"ViewViewController" bundle:nil];
     [self presentViewController:viewView animated:YES completion:NO];
 }

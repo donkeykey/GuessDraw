@@ -83,6 +83,23 @@
     //UINavigationItemの titleViewにラベルを挿入
     self.navigItem.titleView = label;
 }
+
+// アラートのボタンが押された時に呼ばれるデリゲート例文
+-(void)alertView:(UIAlertView*)alertView
+clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    switch (buttonIndex) {
+        case 0:
+            //１番目のボタンが押されたときの処理を記述する
+            [self dismissViewControllerAnimated:YES completion:^{NSLog(@"complete !");}];
+            break;
+        case 1:
+            //２番目のボタンが押されたときの処理を記述する
+            break;
+    }
+    
+}
+
 - (void)tapBackicon{
     NSLog(@"back");
     [self dismissViewControllerAnimated:YES completion:^{NSLog(@"complete !");}];

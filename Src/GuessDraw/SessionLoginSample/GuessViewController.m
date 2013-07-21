@@ -112,7 +112,6 @@
     self.tf.keyboardType = UIKeyboardTypeDefault;
     self.tf.returnKeyType = UIReturnKeyDone;
     self.tf.delegate = self;
-    
 
 }
 
@@ -135,6 +134,15 @@
     [self dismissViewControllerAnimated:YES completion:^{NSLog(@"complete !");}];
 }
 
+- (void) netError{
+    NSLog(@"netError");
+    UIAlertView *alert =
+    [[UIAlertView alloc] initWithTitle:@"通信エラー" message:@"通信状況を確認してください。"
+                              delegate:self cancelButtonTitle:@"確認" otherButtonTitles:nil];
+    [alert show];
+    
+}
+
 - (IBAction)downloadButtonPressed:(id)sender {
     self.ind_view.hidden = false;
     self.opa_view.hidden = true;
@@ -146,7 +154,6 @@
     // リクエストを送信する。
     // 第３引数のブロックに実行結果が渡される。
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        
         if (error) {
             // エラー処理を行う。
             if (error.code == -1003) {
@@ -156,7 +163,9 @@
             } else {
                 NSLog(@"unknown error occurred. reason = %@", error);
             }
-            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self netError];
+            });
         } else {
             int httpStatusCode = ((NSHTTPURLResponse *)response).statusCode;
             if (httpStatusCode == 404) {

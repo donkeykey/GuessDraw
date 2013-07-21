@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 
-@interface ModeViewController : UIViewController
+
+@interface ModeViewController : UIViewController{
+    AVAudioPlayer *bgm;
+}
 
 @end

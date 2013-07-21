@@ -73,64 +73,7 @@
 
 - (void)viewDidLoad
 {
-
-    //initialize//
-    /////indicatorくるくる/////
-    [self.indicator startAnimating];
-    /////bottom位置調整/////
-    CGRect r = [[UIScreen mainScreen] applicationFrame];
-    CGFloat w = r.size.width;
-    CGFloat h = r.size.height;
-    NSLog(@"height:%lf",h);
-    self.bottom_view.frame = CGRectMake(0,h - 44,w,44);
-    /////canvas位置調整/////
-    if (h == 568) {//iphone5用
-        self.mainImage.frame = CGRectMake(0,h - 100 - self.mainImage.frame.size.height,w,self.mainImage.frame.size.height);
-        self.tempDrawImage.frame = CGRectMake(0,h - 100 - self.tempDrawImage.frame.size.height,w,self.tempDrawImage.frame.size.height);
-        self.bindImage.frame = CGRectMake(0,h - 100 - self.mainImage.frame.size.height,w,self.bindImage.frame.size.height);
-    }else{
-        self.mainImage.frame = CGRectMake(0,h - 60 - self.mainImage.frame.size.height,w,self.mainImage.frame.size.height);
-        self.tempDrawImage.frame = CGRectMake(0,h - 60 - self.tempDrawImage.frame.size.height,w,self.tempDrawImage.frame.size.height);
-        self.bindImage.frame = CGRectMake(0,h - 60 - self.mainImage.frame.size.height,w,self.bindImage.frame.size.height);
-    }
-    self.mainImage.userInteractionEnabled = YES;
-    self.tempDrawImage.userInteractionEnabled = YES;
-    //navigationbar色設定
-    UIImage* bgImage = [UIImage imageNamed: @"brown.png"];
-    [bgImage drawInRect:CGRectMake(0, 0, self.naviBar.frame.size.width, self.naviBar.frame.size.height)];
-    [self.naviBar setBackgroundImage:bgImage forBarMetrics:UIBarMetricsDefault];
-    self.letsLabel.font = [UIFont fontWithName:@"HoboStd" size:30.0];    
-    /////backicon画像表示/////
-    UIButton *customView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 30)];
-    [customView setBackgroundImage:[UIImage imageNamed:@"backward.png"]
-                          forState:UIControlStateNormal];
-    [customView addTarget:self action:@selector(tapBackicon) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithCustomView:customView];
-    self.naviItem.leftBarButtonItem = buttonItem;
-    /////UINavigation Itemの設定/////
-    //タイトルフォント設定
-    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-    //背景色指定
-    label.backgroundColor = [UIColor clearColor];
-    //フォントサイズ指定
-    label.font = [UIFont fontWithName:@"HoboStd" size:28.0];
-    //フォントをセンタリングする
-    label.textAlignment = NSTextAlignmentCenter;
-    //フォントの色指定
-    label.textColor =[UIColor whiteColor];
-    //タイトルテキスト指定
-    label.text = @"Draw   ";
-    //UINavigationItemの titleViewにラベルを挿入
-    self.naviItem.titleView = label;
-    
-    /////////////////////////////
-
-    //初期お絵かき色設定
-    red = 0.0/255.0;
-    green = 0.0/255.0;
-    blue = 0.0/255.0;
-    brush = 5.0;
-    opacity = 1.0;
+    [self initialize];
     
     // 送信するリクエストを生成する。
     NSURL *url = [NSURL URLWithString:@"http://ec2-54-218-53-195.us-west-2.compute.amazonaws.com/guess_draw/api/get_title.php"];
@@ -149,7 +92,9 @@
             } else {
                 NSLog(@"unknown error occurred. reason = %@", error);
             }
-            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self netError];
+            });
         } else {
             int httpStatusCode = ((NSHTTPURLResponse *)response).statusCode;
             if (httpStatusCode == 404) {
@@ -193,6 +138,76 @@
     
     
     // Do any additional setup after loading the view from its nib.
+}
+
+- (void) initialize{
+    
+    //initialize//
+    /////indicatorくるくる/////
+    [self.indicator startAnimating];
+    /////bottom位置調整/////
+    CGRect r = [[UIScreen mainScreen] applicationFrame];
+    CGFloat w = r.size.width;
+    CGFloat h = r.size.height;
+    NSLog(@"height:%lf",h);
+    self.bottom_view.frame = CGRectMake(0,h - 44,w,44);
+    /////canvas位置調整/////
+    if (h == 568) {//iphone5用
+        self.mainImage.frame = CGRectMake(0,h - 100 - self.mainImage.frame.size.height,w,self.mainImage.frame.size.height);
+        self.tempDrawImage.frame = CGRectMake(0,h - 100 - self.tempDrawImage.frame.size.height,w,self.tempDrawImage.frame.size.height);
+        self.bindImage.frame = CGRectMake(0,h - 100 - self.mainImage.frame.size.height,w,self.bindImage.frame.size.height);
+    }else{
+        self.mainImage.frame = CGRectMake(0,h - 60 - self.mainImage.frame.size.height,w,self.mainImage.frame.size.height);
+        self.tempDrawImage.frame = CGRectMake(0,h - 60 - self.tempDrawImage.frame.size.height,w,self.tempDrawImage.frame.size.height);
+        self.bindImage.frame = CGRectMake(0,h - 60 - self.mainImage.frame.size.height,w,self.bindImage.frame.size.height);
+    }
+    self.mainImage.userInteractionEnabled = YES;
+    self.tempDrawImage.userInteractionEnabled = YES;
+    //navigationbar色設定
+    UIImage* bgImage = [UIImage imageNamed: @"brown.png"];
+    [bgImage drawInRect:CGRectMake(0, 0, self.naviBar.frame.size.width, self.naviBar.frame.size.height)];
+    [self.naviBar setBackgroundImage:bgImage forBarMetrics:UIBarMetricsDefault];
+    self.letsLabel.font = [UIFont fontWithName:@"HoboStd" size:30.0];
+    /////backicon画像表示/////
+    UIButton *customView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 30)];
+    [customView setBackgroundImage:[UIImage imageNamed:@"backward.png"]
+                          forState:UIControlStateNormal];
+    [customView addTarget:self action:@selector(tapBackicon) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithCustomView:customView];
+    self.naviItem.leftBarButtonItem = buttonItem;
+    /////UINavigation Itemの設定/////
+    //タイトルフォント設定
+    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    //背景色指定
+    label.backgroundColor = [UIColor clearColor];
+    //フォントサイズ指定
+    label.font = [UIFont fontWithName:@"HoboStd" size:28.0];
+    //フォントをセンタリングする
+    label.textAlignment = NSTextAlignmentCenter;
+    //フォントの色指定
+    label.textColor =[UIColor whiteColor];
+    //タイトルテキスト指定
+    label.text = @"Draw   ";
+    //UINavigationItemの titleViewにラベルを挿入
+    self.naviItem.titleView = label;
+    
+    /////////////////////////////
+    
+    //初期お絵かき色設定
+    red = 0.0/255.0;
+    green = 0.0/255.0;
+    blue = 0.0/255.0;
+    brush = 5.0;
+    opacity = 1.0;
+}
+
+- (void) netError{
+    NSLog(@"netError");
+    UIAlertView *alert =
+    [[UIAlertView alloc] initWithTitle:@"通信エラー" message:@"通信状況を確認してください。"
+                              delegate:self cancelButtonTitle:@"確認" otherButtonTitles:nil];
+    [alert show];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -288,7 +303,9 @@
             } else {
                 NSLog(@"unknown error occurred. reason = %@", error);
             }
-            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self netError];
+            });
         } else {
             int httpStatusCode = ((NSHTTPURLResponse *)response).statusCode;
             if (httpStatusCode == 404) {
@@ -444,6 +461,22 @@
     self.mainImage.image = UIGraphicsGetImageFromCurrentImageContext();
     //self.tempDrawImage.image = nil;
     UIGraphicsEndImageContext();
+}
+
+// アラートのボタンが押された時に呼ばれるデリゲート例文
+-(void)alertView:(UIAlertView*)alertView
+clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    switch (buttonIndex) {
+        case 0:
+            //１番目のボタンが押されたときの処理を記述する
+            [self dismissViewControllerAnimated:YES completion:^{NSLog(@"complete !");}];
+            break;
+        case 1:
+            //２番目のボタンが押されたときの処理を記述する
+            break;
+    }
+    
 }
 
 
