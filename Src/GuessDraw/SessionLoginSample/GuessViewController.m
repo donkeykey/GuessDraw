@@ -106,7 +106,17 @@
     self.tf.returnKeyType = UIReturnKeyDone;
     self.tf.delegate = self;
 
+    //アプリがアクティブになった時のnotification
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(becomeAct)
+                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
+    
     [self download];
+}
+
+- (void)becomeAct{
+    NSLog(@"become act");
+    [self dismissViewControllerAnimated:YES completion:^{NSLog(@"complete !");}];
 }
 
 - (void)viewDidUnload{
@@ -168,10 +178,7 @@
             } else {
                 NSLog(@"success request!!");
                 NSLog(@"statusCode = %d", ((NSHTTPURLResponse *)response).statusCode);
-                //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-                //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSShiftJISStringEncoding]);
-                //NSLog(@"responseText = %@", [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]);
-                //self.titleLabel.text = [NSString stringWithFormat:@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+
                 
                 NSString *contents = [[NSString alloc] initWithData:data
                                                            encoding:NSUTF8StringEncoding];
@@ -185,12 +192,6 @@
 
                 floid = [jsonObject objectForKey:@"flow_id"];
                 NSLog(@"floid:%@",floid);
-                //                NSURL* guessImageURL = [NSURL URLWithString:[jsonObject objectForKey:@"pic_url" ]];
-                //                NSData* guessImageData = [NSData dataWithContentsOfURL: guessImageURL];
-                //                UIImage* low_image = [[UIImage alloc] initWithData: guessImageData];
-                //                self.guessPic.image  = [[UIImage alloc] initWithData: guessImageData];
-                //                UIImageView* imgview = [[UIImageView alloc] initWithImage:low_image];
-                //                self.guessPic.image = low_image;
                 NSLog(@"get_pic url:%@",[jsonObject objectForKey:@"pic_url"]);
                 
                 //local prepare

@@ -203,6 +203,11 @@
     
     //white判定用フラグ
     white_flag = 1;
+    
+    //アプリがアクティブになった時のnotification
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(becomeAct)
+                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void) netError{
@@ -502,7 +507,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
 }
 
-
+- (void)becomeAct{
+    NSLog(@"become act");
+    [self dismissViewControllerAnimated:YES completion:^{NSLog(@"complete !");}];
+}
 
 
 @end

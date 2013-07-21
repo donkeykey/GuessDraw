@@ -17,6 +17,7 @@
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import <FacebookSDK/FBGraphUser.h>
+#import "ModeViewController.h"
 
 
 // Session Login sample application

@@ -97,6 +97,8 @@
 // application may choose to notify the user that they switched away from the Facebook application without
 // completely logging in
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    NSLog(@"become active");
+
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
@@ -105,6 +107,8 @@
     // We need to properly handle activation of the application with regards to SSO
     //  (e.g., returning from iOS 6.0 authorization dialog or from fast app switching).
     [FBAppCall handleDidBecomeActiveWithSession:self.session];
+    
+
 }
 
 - (NSString *)Dev{
