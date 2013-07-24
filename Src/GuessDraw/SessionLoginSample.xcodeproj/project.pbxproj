@@ -28,10 +28,6 @@
 		424689371799ACBA007F09F1 /* draw_clr.png in Resources */ = {isa = PBXBuildFile; fileRef = 424689361799ACBA007F09F1 /* draw_clr.png */; };
 		4246893B179AC0BF007F09F1 /* ViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42468939179AC0BE007F09F1 /* ViewViewController.m */; };
 		4246893C179AC0BF007F09F1 /* ViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4246893A179AC0BF007F09F1 /* ViewViewController.xib */; };
-<<<<<<< HEAD
-
-=======
->>>>>>> dd05be8571814175a3220c38a5c80dffdf90a674
 		4282206B179BB214006C35D8 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4282206A179BB214006C35D8 /* FacebookSDK.framework */; };
 		4282206D179BC873006C35D8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4282206C179BC873006C35D8 /* AVFoundation.framework */; };
 		42822070179BC90A006C35D8 /* sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4282206F179BC90A006C35D8 /* sound.mp3 */; };
@@ -136,11 +132,6 @@
 
 				4282206D179BC873006C35D8 /* AVFoundation.framework in Frameworks */,
 				4282206B179BB214006C35D8 /* FacebookSDK.framework in Frameworks */,
-
-<<<<<<< HEAD
-
-=======
->>>>>>> dd05be8571814175a3220c38a5c80dffdf90a674
 				B59359E416D564DE000A63F0 /* Security.framework in Frameworks */,
 				85A928EA1611471C008699F1 /* Social.framework in Frameworks */,
 				B9A416AA16113F2D001E7A77 /* AdSupport.framework in Frameworks */,
@@ -197,10 +188,6 @@
 		84C757AD152A38770070DD9C = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-
-=======
->>>>>>> dd05be8571814175a3220c38a5c80dffdf90a674
 				4282206C179BC873006C35D8 /* AVFoundation.framework */,
 
 				4282206A179BB214006C35D8 /* FacebookSDK.framework */,
