@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewViewController : UIViewController{
+@interface ViewViewController : UIViewController<UIScrollViewDelegate>{
     
 }
-
+@property (nonatomic,retain) NSMutableData *async_data;
+@property (nonatomic,retain) NSURLConnection *conn;
 @end
